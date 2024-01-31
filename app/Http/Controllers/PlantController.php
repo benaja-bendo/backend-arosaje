@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\PlantResource;
 use App\Models\Plant;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Resources\PlantResource;
 use App\Http\Resources\PlantResourceCollection;
 
 class PlantController extends ApiController
 {
     /**
      * Display a listing of the resource.
+     * @return JsonResponse
      */
-    public function index()
+    public function index() : JsonResponse
     {
         $plants = Plant::all();
 
-        return $this->sendResponse(
+        return $this->successResponse(
             data: new PlantResourceCollection($plants),
             message: 'Plants retrieved successfully.'
         );
@@ -24,8 +26,10 @@ class PlantController extends ApiController
 
     /**
      * Store a newly created resource in storage.
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request) : JsonResponse
     {
         $request->validate(
             rules: [
@@ -41,7 +45,7 @@ class PlantController extends ApiController
 
         $plant = Plant::create($request->all());
 
-        return $this->sendResponse(
+        return $this->successResponse(
             data: new PlantResource($plant),
             message: 'Plant created successfully.'
         );
@@ -49,18 +53,20 @@ class PlantController extends ApiController
 
     /**
      * Display the specified resource.
+     * @param string $id
+     * @return JsonResponse
      */
-    public function show(string $id)
+    public function show(string $id) : JsonResponse
     {
         $plant = Plant::find($id);
 
         if (is_null($plant)) {
-            return $this->sendError(
-                message: 'Plant not found.'
+            return $this->errorResponse(
+                error: 'Plant not found.'
             );
         }
 
-        return $this->sendResponse(
+        return $this->successResponse(
             data: new PlantResource($plant),
             message: 'Plant retrieved successfully.'
         );
@@ -68,14 +74,17 @@ class PlantController extends ApiController
 
     /**
      * Update the specified resource in storage.
+     * @param Request $request
+     * @param string $id
+     * @return JsonResponse
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
         $plant = Plant::find($id);
 
         if (is_null($plant)) {
-            return $this->sendError(
-                message: 'Plant not found.'
+            return $this->errorResponse(
+                error: 'Plant not found.'
             );
         }
 
@@ -93,7 +102,7 @@ class PlantController extends ApiController
 
         $plant->update($request->all());
 
-        return $this->sendResponse(
+        return $this->successResponse(
             data: new PlantResource($plant),
             message: 'Plant updated successfully.'
         );
@@ -101,20 +110,22 @@ class PlantController extends ApiController
 
     /**
      * Remove the specified resource from storage.
+     * @param string $id
+     * @return JsonResponse
      */
-    public function destroy(string $id)
+    public function destroy(string $id) : JsonResponse
     {
         $plant = Plant::find($id);
 
         if (is_null($plant)) {
-            return $this->sendError(
-                message: 'Plant not found.'
+            return $this->errorResponse(
+                error: 'Plant not found.'
             );
         }
 
         $plant->delete();
 
-        return $this->sendResponse(
+        return $this->successResponse(
             data: [],
             message: 'Plant deleted successfully.'
         );
