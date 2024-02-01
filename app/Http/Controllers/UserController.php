@@ -76,7 +76,7 @@ class UserController extends ApiController
         $request->validate(
             rules: [
                 'name' => 'nullable|string|max:255',
-                'email' => 'required|email|unique:users,email,' . $user->id,
+                'email' => 'nullable|email|unique:users,email,' . $user->id,
                 'password' => 'nullable|string|min:8',
             ]
         );
