@@ -81,7 +81,6 @@ class PlantController extends ApiController
     public function update(Request $request, string $id): JsonResponse
     {
         $plant = Plant::find($id);
-
         if (is_null($plant)) {
             return $this->errorResponse(
                 error: 'Plant not found.'
@@ -92,8 +91,8 @@ class PlantController extends ApiController
             rules: [
                 'name' => 'nullable|string|max:255',
                 'description' => 'nullable|string|max:255',
-                'path_image' => 'required',
-                'user_created' => 'required',
+                'path_image' => 'nullable|string|max:255',
+                'user_created' => 'nullable|string|max:255',
                 'date_begin' => 'nullable|date',
                 'date_end' => 'nullable|date',
                 'is_published' => 'nullable|boolean',

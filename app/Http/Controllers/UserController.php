@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Resources\UserResourceCollection;
 use App\Http\Resources\UserResource;
 
-class UserController extends ApiController
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,8 +36,13 @@ class UserController extends ApiController
                 'name' => 'nullable|string|max:255',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required|string|min:8',
+                'profile_photo_path' => 'nullable|file|mimes:jpg,jpeg,png,gif,svg|max:2048',
             ]
         );
+
+        if ($request->hasFile('profile_photo_path')) {
+            $request->profile_photo_path = saveFileToStorageDirectory($request, 'profile_photo_path', 'profile-photos');
+        }
 
         $user = User::create($request->all());
 
@@ -104,6 +109,25 @@ class UserController extends ApiController
         return $this->successResponse(
             data: new UserResource($user),
             message: 'User deleted successfully.'
+        );
+    }
+
+    public function changeProfilePhoto(Request $request, string $id) : JsonResponse
+    {
+        $user = User::findOrFail($id);
+
+        $request->validate(
+            rules: [
+                'profile_photo_path' => 'required|file|mimes:jpg,jpeg,png,gif,svg|max:2048',
+            ]
+        );
+
+        $user->profile_photo_path = saveFileToStorageDirectory($request, 'profile_photo_path', 'profile-photos');
+        $user->save();
+
+        return $this->successResponse(
+            data: new UserResource($user),
+            message: 'Profile photo updated successfully.'
         );
     }
 }

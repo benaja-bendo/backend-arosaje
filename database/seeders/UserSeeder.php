@@ -12,6 +12,24 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory(20)->create();
+//        \App\Models\User::factory(20)->create();
+        \App\Models\User::factory()->createMany([
+            [
+                'name' => 'richard',
+                'email' => 'richard@example.com',
+            ],
+            [
+                'name' => 'Emma',
+                'email' => 'emma@example.com',
+            ],
+            [
+                'name' => 'benji',
+                'email' => 'benji@example.com',
+            ],
+            [
+                'name' => 'mohamed',
+                'email' => 'mohamed@example.com',
+            ],
+        ]);
     }
 }

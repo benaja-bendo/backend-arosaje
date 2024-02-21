@@ -19,8 +19,9 @@ class PlantFactory extends Factory
         return [
             'name' => $this->faker->name,
             'description' => $this->faker->text,
+            'address' => $this->faker->address,
             'path_image' => $this->faker->imageUrl(),
-            'user_created' => $this->faker->randomElements([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])[0],
+            'user_created' => $this->faker->randomElements([1, 2, 3])[0],
             'date_begin' => $this->faker->date(),
             'date_end' => $this->faker->date(),
             'is_published' => $this->faker->boolean,

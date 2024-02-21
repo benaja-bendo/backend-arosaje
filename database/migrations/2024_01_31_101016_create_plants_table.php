@@ -16,11 +16,13 @@ return new class extends Migration
             $table->string('name')->nullable()->default(null);
             $table->string('description')->nullable()->default(null);
             $table->text('path_image');
-            $table->unsignedBigInteger('user_created');
+            $table->text('address');
             $table->date('date_begin')->nullable()->default(null);
             $table->date('date_end')->nullable()->default(null);
             $table->boolean('is_published')->default(false);
-            $table->foreign('user_created')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+//            $table->unsignedBigInteger('user_created');
+//            $table->foreign('user_created')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_created')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

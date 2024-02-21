@@ -22,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'profile_photo_path',
         'password',
     ];
 
@@ -48,5 +49,10 @@ class User extends Authenticatable
     public function plants(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Plant::class, 'user_created');
+    }
+
+    public function advices(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Advice::class);
     }
 }

@@ -4,21 +4,19 @@ namespace App\Enums;
 
 enum RolesEnum: string
 {
-    case root = 'root';
-    case guest = 'guest';
+    case simple_user = 'simple_user';
     case botaniste = 'botaniste';
 
     public function label(): string
     {
         return match ($this) {
-            self::root => 'root',
-            self::guest => 'guest',
+            self::simple_user => 'simple_user',
             self::botaniste => 'botaniste',
         };
     }
 
-    public function has($student) : bool
+    public function has($user) : bool
     {
-        return $this->value === $student;
+        return $this->value === $user;
     }
 }
