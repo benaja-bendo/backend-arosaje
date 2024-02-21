@@ -57,6 +57,66 @@ Conseils d'entretien : Arrosez modérément, placez-la à la lumière indirecte,
                 'date_end' => '2024-03-31',
                 'is_published' => fake()->boolean,
             ],
+            [
+                'name' => 'Lys Calla (Zantedeschia)',
+                'description' => "Une plante élégante avec des fleurs en forme d'entonnoir disponibles dans diverses couleurs.
+Conseils d'entretien : Arrosez régulièrement, placez-la à la lumière indirecte et fertilisez pendant la saison de croissance.",
+                'path_image' => "https://w7.pngwing.com/pngs/348/690/png-transparent-arum-lily-tiger-lily-flower-calla-plant-stem-color-flower-thumbnail.png",
+                'address' => fake()->address,
+                'user_created' => fake()->randomElements([1, 2, 3, 4])[0],
+                'date_begin' => '2024-03-01',
+                'date_end' => '2024-03-31',
+                'is_published' => fake()->boolean,
+            ],
+
+            [
+                'name' => 'Sansevieria (Langue de belle-mère)',
+                'description' => "Une plante robuste aux feuilles dressées, vertes et striées.
+Conseils d'entretien : Tolère des conditions de faible luminosité, arrosez modérément, et laissez sécher le sol entre les arrosages.",
+                'path_image' => "https://www.monmagasinvert.fr/media/catalog/product/cache/5739b9c8f18ae7062b084f39115e268a/s/a/sanseveria-ok_2_.png",
+                'address' => fake()->address,
+                'user_created' => fake()->randomElements([1, 2, 3, 4])[0],
+                'date_begin' => '2024-03-01',
+                'date_end' => '2024-03-31',
+                'is_published' => fake()->boolean,
+            ],
+
+            [
+                'name' => 'Pothos (Epipremnum aureum)',
+                'description' => "Une plante grimpante facile à entretenir avec des
+feuilles en forme de cœur, parfois panachées.
+Conseils d'entretien : Tolère des conditions de faible luminosité, arrosez régulièrement et évitez les excès d'eau.",
+                'path_image' => "https://sentinel.nl/wp-content/uploads/2021/03/Aureum-Groot-witte-pot.png",
+                'address' => fake()->address,
+                'user_created' => fake()->randomElements([1, 2, 3, 4])[0],
+                'date_begin' => '2024-03-01',
+                'date_end' => '2024-03-31',
+                'is_published' => fake()->boolean,
+            ],
+
+            [
+                'name' => 'Cactus de Noël (Schlumbergera)',
+                'description' => "Un cactus d'intérieur avec des fleurs spectaculaires pendant la période des fêtes.
+Conseils d'entretien : Arrosez modérément, placez-la dans une lumière indirecte, et stimulez la floraison en contrôlant la température.",
+                'path_image' => "https://e7.pngegg.com/pngimages/148/213/png-clipart-houseplant-cactus-flowers-cactaceae-flowering-cactus-flower-astrological-sign.png",
+                'address' => fake()->address,
+                'user_created' => fake()->randomElements([1, 2, 3, 4])[0],
+                'date_begin' => '2024-03-01',
+                'date_end' => '2024-03-31',
+                'is_published' => fake()->boolean,
+            ],
+
+            [
+                'name' => 'Orchidée Phalaenopsis',
+                'description' => "Une orchidée populaire avec des fleurs élégantes et une longue durée de floraison.
+Conseils d'entretien : Arrosez avec parcimonie, placez-la dans une lumière filtrée, et fournissez un bon drainage.",
+                'path_image' => "https://e7.pngegg.com/pngimages/266/968/png-clipart-pink-orchids-illustration-flower-orchids-petal-orchid-branch-lilium.png",
+                'address' => fake()->address,
+                'user_created' => fake()->randomElements([1, 2, 3, 4])[0],
+                'date_begin' => '2024-03-01',
+                'date_end' => '2024-03-31',
+                'is_published' => fake()->boolean,
+            ],
         ];
 
 //        \App\Models\Plant::factory()

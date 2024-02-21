@@ -17,7 +17,7 @@ class AdviceFactory extends Factory
     public function definition(): array
     {
         return [
-            'plant_id' => $this->faker->randomElements([1, 2, 3])[0],
+            'plant_id' => $this->faker->randomElements([1, 2, 3, 4, 5])[0],
             'user_id' => $this->faker->randomElements([1, 2, 3])[0],
             'content' => $this->faker->text(),
         ];

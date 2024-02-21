@@ -129,4 +129,20 @@ class PlantController extends ApiController
             message: 'Plant deleted successfully.'
         );
     }
+
+    public function getMyPlants(string $id) : JsonResponse
+    {
+        $plants = Plant::where('user_created', $id)->get();
+
+        if ($plants->isEmpty()) {
+            return $this->errorResponse(
+                error: 'My plants not found.'
+            );
+        }
+
+        return $this->successResponse(
+            data: new PlantResourceCollection($plants),
+            message: 'My plants retrieved successfully.'
+        );
+    }
 }
