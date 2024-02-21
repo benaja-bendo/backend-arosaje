@@ -19,7 +19,7 @@ class PlantResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'address' => $this->address,
-            'path_image' => $this->path_image,
+            'path_image' => url($this->path_image),
             'user_created' => $this->user_created,
             'user_created_name' => $this->user->name,
             'date_begin' => $this->date_begin,
