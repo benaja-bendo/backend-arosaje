@@ -46,9 +46,6 @@ class AdviceSeeder extends Seeder
                 'content' => "Placez-la dans un endroit ensoleillé et arrosez modérément."
             ],
         ];
-//        Advice::factory()
-//            ->count(10)
-//            ->create();
         foreach ($datas as $data) {
             Advice::factory()->create($data);
         }

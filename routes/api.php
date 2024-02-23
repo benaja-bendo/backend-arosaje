@@ -3,9 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 Route::apiResource('plants', \App\Http\Controllers\PlantController::class);
 Route::post('plants/{plant}/demands', [\App\Http\Controllers\DemandController::class, 'createDemand']);
 Route::get('plants/me/{id}', [\App\Http\Controllers\PlantController::class, 'getMyPlants']);
@@ -16,4 +14,48 @@ Route::delete('plants/{plant}/demands/{demand}', [\App\Http\Controllers\DemandCo
 Route::apiResource('users', \App\Http\Controllers\UserController::class);
 Route::post('users/{user}/profile-photo', [\App\Http\Controllers\UserController::class, 'changeProfilePhoto']);
 
-require __DIR__.'/auth.php';
+Route::post('/newsletter', function (Request $request) {
+    $request->validate([
+        'email' => 'required|email',
+        'comment' => 'nullable|string',
+    ]);
+
+    try {
+        $file = fopen('newsletter.txt', 'a');
+        fwrite($file, $request->email . "\n");
+        fclose($file);
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => 'An error occurred while saving your email.',
+        ], 500);
+    }
+
+    return response()->json([
+        'message' => 'You have been subscribed to our newsletter.',
+    ]);
+});
+
+Route::get('/newsletter/avis', function () {
+    try {
+        $file = fopen('newsletter.txt', 'r');
+        $emails = [];
+        while (!feof($file)) {
+            $email = fgets($file);
+            if ($email !== false) {
+                $emails[] = trim($email);
+            }
+        }
+        fclose($file);
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => 'An error occurred while retrieving the emails.',
+        ], 500);
+    }
+
+    return response()->json([
+        'emails' => $emails,
+        'message' => 'Emails retrieved successfully.',
+    ]);
+});
+
+require __DIR__ . '/auth.php';
