@@ -5,13 +5,25 @@ use App\Models\User;
 test('users can authenticate using the login screen', function () {
     $user = User::factory()->create();
 
-    $response = $this->post('/login', [
+    $response = $this->post('api/login', [
         'email' => $user->email,
         'password' => 'password',
     ]);
-
-    $this->assertAuthenticated();
-    $response->assertNoContent();
+    $response->assertStatus(200);
+    $response->assertJsonStructure([
+        'data' => [
+            'token',
+            'user' => [
+                'id',
+                'name',
+                'email',
+                'email_verified_at',
+                'created_at',
+                'updated_at',
+            ],
+        ],
+        'message',
+    ]);
 });
 
 test('users can not authenticate with invalid password', function () {

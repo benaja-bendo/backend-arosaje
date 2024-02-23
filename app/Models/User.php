@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Advice::class);
     }
+
+    public function demands(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Demand::class);
+    }
 }

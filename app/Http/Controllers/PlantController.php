@@ -35,7 +35,7 @@ class PlantController extends ApiController
             'name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',  // Added validation for 'address'
-            'path_image' => 'required|file|max:1024|mimes:jpeg,jpg,png',  // Ensure valid image types
+            'path_image' => 'required|file|mimes:jpeg,jpg,png',  // Ensure valid image types
             'user_created' => 'required',
             'date_begin' => 'nullable | date',
             'date_end' => 'nullable | date',
@@ -44,7 +44,8 @@ class PlantController extends ApiController
 
         $path_image = null;
         if ($request->hasFile('path_image')) {
-            $path_image = $request->file('path_image')->store('plants');
+//            $path_image = $request->file('path_image')->store('plants');
+            $path_image = saveFileToStorageDirectory($request, 'path_image', 'plants');
         }
 
         $plant = Plant::create([
