@@ -44,7 +44,6 @@ class PlantController extends ApiController
 
         $path_image = null;
         if ($request->hasFile('path_image')) {
-//            $path_image = $request->file('path_image')->store('plants');
             $path_image = saveFileToStorageDirectory($request, 'path_image', 'plants');
         }
 
