@@ -13,8 +13,44 @@ class AdviceSeeder extends Seeder
      */
     public function run(): void
     {
-        Advice::factory()
-            ->count(10)
-            ->create();
+        $datas = [
+            [
+                'content' => "Arrosez régulièrement, mais laissez le sol sécher entre les arrosages."
+            ],
+            [
+                'content' => "Placez-la dans un endroit ensoleillé et arrosez modérément."
+            ],
+            [
+
+                'content' => "Gardez le sol constamment humide, évitez la lumière directe du soleil."
+            ],
+            [
+                'content' => "Arrosez modérément, placez-la à la lumière indirecte."
+            ],
+            [
+                'content' => "Arrosez régulièrement, mais laissez le sol sécher entre les arrosages."
+            ],
+            [
+                'content' => "Placez-la dans un endroit ensoleillé et arrosez modérément."
+            ],
+            [
+                'content' => "Gardez le sol constamment humide, évitez la lumière directe du soleil."
+            ],
+            [
+                'content' => "Arrosez modérément, placez-la à la lumière indirecte."
+            ],
+            [
+                'content' => "Arrosez régulièrement, mais laissez le sol sécher entre les arrosages."
+            ],
+            [
+                'content' => "Placez-la dans un endroit ensoleillé et arrosez modérément."
+            ],
+        ];
+//        Advice::factory()
+//            ->count(10)
+//            ->create();
+        foreach ($datas as $data) {
+            Advice::factory()->create($data);
+        }
     }
 }
