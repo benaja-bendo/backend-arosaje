@@ -16,7 +16,10 @@ class PlantController extends ApiController
      */
     public function index(): JsonResponse
     {
-        $plants = Plant::all();
+        $plants = Plant::query()
+            ->orderBy('created_at', 'desc')
+//            ->where('is_published', true)
+            ->get();
 
         return $this->successResponse(
             data: new PlantResourceCollection($plants),
