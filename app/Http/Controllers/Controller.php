@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as BaseController;
+use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class Controller extends BaseController
 {
@@ -21,7 +22,7 @@ class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    public function successResponse(array|object|null $data, $message = null, int $code = 200): JsonResponse
+    public function successResponse(array|object|null $data, $message = null, int $code = ResponseAlias::HTTP_OK): JsonResponse
     {
         $response = [
             'success' => true,
@@ -41,7 +42,7 @@ class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    public function errorResponse(string $error, array $errorMessages = [], int $code = 404): JsonResponse
+    public function errorResponse(string $error, array $errorMessages = [], int $code = ResponseAlias::HTTP_BAD_REQUEST): JsonResponse
     {
         $response = [
             'success' => false,
@@ -64,7 +65,7 @@ class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    public function sendErrorWithCode(string $error, array $errorMessages = [], int $code = 404): JsonResponse
+    public function sendErrorWithCode(string $error, array $errorMessages = [], int $code = ResponseAlias::HTTP_NOT_FOUND): JsonResponse
     {
         $response = [
             'success' => false,
@@ -97,22 +98,6 @@ class Controller extends BaseController
             ]
         ]);
 
-        return $this->successResponse($data);
-    }
-
-    /**
-     * Send a response with token.
-     *
-     * @param $user
-     *
-     * @return JsonResponse
-     */
-    public function respondWithToken($user): JsonResponse
-    {
-        return response()->json([
-            'access_token' => $user->createToken('authToken')->plainTextToken,
-            'token_type' => 'Bearer',
-            'user' => new UserResource($user)
-        ]);
+        return $this->successResponse($data, 'Data retrieved successfully.');
     }
 }

@@ -119,7 +119,7 @@ class PlantController extends ApiController
 
         return $this->successResponse(
             data: new PlantResource($plant),
-            message: 'Plant updated successfully . '
+            message: 'Plant updated successfully'
         );
     }
 
@@ -142,7 +142,7 @@ class PlantController extends ApiController
 
         return $this->successResponse(
             data: [],
-            message: 'Plant deleted successfully . '
+            message: 'Plant deleted successfully'
         );
     }
 
@@ -152,13 +152,13 @@ class PlantController extends ApiController
 
         if ($plants->isEmpty()) {
             return $this->errorResponse(
-                error: 'My plants not found . '
+                error: 'My plants not found'
             );
         }
 
         return $this->successResponse(
             data: new PlantResourceCollection($plants),
-            message: 'My plants retrieved successfully . '
+            message: 'My plants retrieved successfully'
         );
     }
 }
