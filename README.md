@@ -102,3 +102,59 @@
     - content
     - BotanistUser (Foreign Key references Users.UserID)
     - plant_id (Foreign Key references Plants.PlantID)
+  
+---
+
+## Introduction
+
+Ce document explique comment cloner, installer et lancer une application Laravel.
+
+## Prérequis
+
+Avant de commencer, vous devez avoir installé les éléments suivants :
+
+Git
+PHP 8.0 ou supérieur
+Composer
+Cloner le projet
+
+Pour cloner le projet, utilisez la commande suivante :
+
+```sh
+git clone https://github.com/votre-nom-utilisateur/nom-du-projet.git
+```
+
+## Installer les dépendances
+
+Pour installer les dépendances du projet, utilisez la commande suivante :
+
+```sh
+composer install
+```
+
+## Créer le fichier .env
+
+Copiez le fichier `.env.example` vers `.env` et configurez les variables d'environnement.
+
+Créer la base de données
+
+Créez la base de données et configurez les utilisateurs et les permissions.
+
+## Exécuter les migrations
+
+Exécutez les migrations pour créer les tables de la base de données :
+
+```sh
+php artisan migrate
+```
+
+## Lancer l'application
+
+Pour lancer l'application, utilisez la commande suivante :
+
+php artisan serve
+Accéder à l'application
+
+L'application est accessible à l'adresse http://localhost:8000.
+
+Fonctionnalités de l'application
