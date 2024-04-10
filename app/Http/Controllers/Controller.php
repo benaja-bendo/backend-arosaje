@@ -22,7 +22,7 @@ class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    public function successResponse(array|object|null $data, $message = null, int $code = ResponseAlias::HTTP_OK): JsonResponse
+    public function successResponse(array|object|null $data,string|null $message = null, int $code = ResponseAlias::HTTP_OK): JsonResponse
     {
         $response = [
             'success' => true,
