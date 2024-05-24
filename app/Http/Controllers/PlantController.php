@@ -7,13 +7,36 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Resources\PlantResource;
 use App\Http\Resources\PlantResourceCollection;
+use OpenApi\Attributes as OA;
 
 class PlantController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     * @return JsonResponse
-     */
+    #[OA\Get(
+        path: "/api/v1/plants",
+        operationId: "indexPlants",
+        description: "Get all plants",
+        summary: "List all plants",
+        tags: ["Plants"],
+        parameters: [
+            new OA\Parameter(
+                name: "search",
+                description: "Search by name",
+                in: "query",
+                required: false,
+                allowEmptyValue: false,
+                schema: new OA\Schema(type: "string"),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'successful operation',
+                content: [
+                    new OA\JsonContent(ref: "#/components/schemas/Plant"),
+                ]
+            )
+        ]
+    )]
     public function index(): JsonResponse
     {
         $plants = Plant::query()
@@ -27,11 +50,7 @@ class PlantController extends ApiController
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return JsonResponse
-     */
+
     public function store(Request $request): JsonResponse
     {
         $request->validate([
@@ -67,11 +86,44 @@ class PlantController extends ApiController
         );
     }
 
-    /**
-     * Display the specified resource.
-     * @param string $id
-     * @return JsonResponse
-     */
+    #[OA\Get(
+        path: "/api/v1/plants/{id}",
+        operationId: "showPlant",
+        description: "Get plant by id",
+        summary: "Get plant",
+        tags: ["Plants"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "Plant id",
+                in: "path",
+                required: true,
+                allowEmptyValue: false,
+                schema: new OA\Schema(type: "string"),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'successful operation',
+                content: [
+                    new OA\JsonContent(ref: "#/components/schemas/Plant"),
+                ]
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Plant not found',
+                content: [
+                    new OA\JsonContent(
+                        example: [
+                            "success" => false,
+                            "message" => "Plant not found . "
+                        ]
+                    )
+                ]
+            )
+        ]
+    )]
     public function show(string $id): JsonResponse
     {
         $plant = Plant::find($id);
@@ -88,12 +140,6 @@ class PlantController extends ApiController
         );
     }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param string $id
-     * @return JsonResponse
-     */
     public function update(Request $request, string $id): JsonResponse
     {
         $plant = Plant::find($id);
@@ -123,11 +169,49 @@ class PlantController extends ApiController
         );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param string $id
-     * @return JsonResponse
-     */
+    #[OA\Delete(
+        path: "/api/v1/plants/{id}",
+        operationId: "destroyPlant",
+        description: "Delete plant by id",
+        summary: "Delete plant",
+        tags: ["Plants"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "Plant id",
+                in: "path",
+                required: true,
+                allowEmptyValue: false,
+                schema: new OA\Schema(type: "string"),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'successful operation',
+                content: [
+                    new OA\JsonContent(
+                        example: [
+                            "success" => true,
+                            "message" => "Plant deleted successfully"
+                        ]
+                    )
+                ]
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Plant not found',
+                content: [
+                    new OA\JsonContent(
+                        example: [
+                            "success" => false,
+                            "message" => "Plant not found . "
+                        ]
+                    )
+                ]
+            )
+        ]
+    )]
     public function destroy(string $id): JsonResponse
     {
         $plant = Plant::find($id);
@@ -146,6 +230,44 @@ class PlantController extends ApiController
         );
     }
 
+    #[OA\Get(
+        path: "/api/v1/plants/me/{id}",
+        operationId: "getMyPlants",
+        description: "Get my plants",
+        summary: "Get my plants",
+        tags: ["Plants"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "User id",
+                in: "path",
+                required: true,
+                allowEmptyValue: false,
+                schema: new OA\Schema(type: "string"),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'successful operation',
+                content: [
+                    new OA\JsonContent(ref: "#/components/schemas/Plant"),
+                ]
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'My plants not found',
+                content: [
+                    new OA\JsonContent(
+                        example: [
+                            "success" => false,
+                            "message" => "My plants not found"
+                        ]
+                    )
+                ]
+            )
+        ]
+    )]
     public function getMyPlants(string $id): JsonResponse
     {
         $plants = Plant::where('user_created', $id)->get();
