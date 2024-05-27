@@ -12,15 +12,31 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use OpenApi\Attributes as OA;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Handle an incoming registration request.
-     *
-     * @return JsonResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    #[OA\Post(
+        path: '/register',
+        description: 'Register a new user.',
+        summary: 'Register a new user',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['name', 'email', 'password'],
+                properties: [
+                    new OA\Property(property: 'name', type: 'string', maxLength: 255),
+                    new OA\Property(property: 'email', type: 'string', format: 'email', maxLength: 255),
+                    new OA\Property(property: 'password', type: 'string', format: 'password'),
+                ]
+            ),
+        ),
+        tags: ['Auth'],
+        responses: [
+            new OA\Response(response: 200, description: 'OK'),
+            new OA\Response(response: 422, description: 'Validation error')
+        ]
+    )]
     public function store(Request $request): JsonResponse
     {
         $request->validate([

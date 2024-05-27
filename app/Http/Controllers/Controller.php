@@ -9,34 +9,62 @@ use Illuminate\Routing\Controller as BaseController;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(
-    version: "0.1",
-    description: "Api publique pour l'application Arosaje",
-    title: "Arosaje API",
-    termsOfService: "http://arosaje.com/tos",
-    contact: new OA\Contact(email: "contact@example.com"),
-    license: new OA\License(name: "MIT", url: "http://arosaje.com"),
-)]
-#[OA\OpenApi(
-    security: [
-        [
-            new OA\SecurityScheme(
-                securityScheme: "basic",
-                type: "http",
-                scheme: "basic",
-            )
-        ]
-    ],
-)]
-#[OA\SecurityScheme(
-    securityScheme: "bearerAuth",
-    type: "http",
-    description: "Authentification par jeton porteur JWT",
-    bearerFormat: "JWT",
-    scheme: "bearer",
+#[
+    OA\Info(
+        version: "0.1",
+        description: "Api publique pour l'application Arosaje",
+        title: "Arosaje API",
+        termsOfService: "http://arosaje.com/tos",
+        contact: new OA\Contact(email: "contact@example.com"),
+        license: new OA\License(name: "MIT", url: "http://arosaje.com"),
+    ),
+    OA\OpenApi(
+        security: [
+            [
+                new OA\SecurityScheme(
+                    securityScheme: "basic",
+                    type: "http",
+                    scheme: "basic",
+                )
+            ]
+        ],
+    ),
+    OA\SecurityScheme(
+        securityScheme: "bearerAuth",
+        type: "http",
+        description: "Authentification par jeton porteur JWT",
+        bearerFormat: "JWT",
+        scheme: "bearer",
 
-)]
-
+    ),
+    OA\SecurityScheme(
+        securityScheme: "sanctum",
+        type: "apiKey",
+        scheme: "bearer",
+        flows: [
+            new OA\Flow(
+                authorizationUrl: "http://arosaje.com/oauth/authorize",
+                tokenUrl: "http://arosaje.com/oauth/token",
+                refreshUrl: "http://arosaje.com/oauth/token/refresh",
+                flow: "password",
+                scopes: [
+                    "read:users" => "Lire les utilisateurs",
+                    "write:users" => "Créer, modifier et supprimer les utilisateurs",
+                ],
+            ),
+            new OA\Flow(
+                authorizationUrl: "http://arosaje.com/oauth/authorize",
+                tokenUrl: "http://arosaje.com/oauth/token",
+                refreshUrl: "http://arosaje.com/oauth/token/refresh",
+                flow: "clientCredentials",
+                scopes: [
+                    "read:users" => "Lire les utilisateurs",
+                    "write:users" => "Créer, modifier et supprimer les utilisateurs",
+                ],
+            ),
+        ],
+    ),
+]
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
@@ -50,7 +78,7 @@ class Controller extends BaseController
      *
      * @return JsonResponse
      */
-    public function successResponse(array|object|null $data,string|null $message = null, int $code = ResponseAlias::HTTP_OK): JsonResponse
+    public function successResponse(array|object|null $data, string|null $message = null, int $code = ResponseAlias::HTTP_OK): JsonResponse
     {
         $response = [
             'success' => true,
