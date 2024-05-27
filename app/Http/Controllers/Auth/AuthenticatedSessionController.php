@@ -10,13 +10,31 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use OpenApi\Attributes as OA;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Handle an incoming authentication request.
-     * @return JsonResponse
-     */
+    #[OA\Post(
+        path: '/login',
+        description: 'Log in a user.',
+        summary: 'Log in a user',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['email', 'password'],
+                properties: [
+                    new OA\Property(property: 'email', type: 'string', format: 'email', maxLength: 255),
+                    new OA\Property(property: 'password', type: 'string', format: 'password'),
+                ]
+            ),
+        ),
+        tags: ['Auth'],
+        responses: [
+            new OA\Response(response: 200, description: 'OK'),
+            new OA\Response(response: 401, description: 'Invalid credentials'),
+            new OA\Response(response: 422, description: 'Validation error')
+        ]
+    )]
     public function store(LoginRequest $request): JsonResponse
     {
         $request->validate([
@@ -40,19 +58,19 @@ class AuthenticatedSessionController extends Controller
         return $this->errorResponse('Invalid credentials', [], 401);
     }
 
-    /**
-     * Destroy an authenticated session.
-     * @return JsonResponse
-     */
-    public function destroy(Request $request): JsonResponse
+    #[OA\Delete(
+        path: '/logout',
+        description: 'Log out a user.',
+        summary: 'Log out a user',
+        tags: ['Auth'],
+        responses: [
+            new OA\Response(response: 204, description: 'No content')
+        ]
+    )]
+    public function destroy(Request $request): Response
     {
-//        Auth::guard('web')->logout();
-//
-//        $request->session()->invalidate();
-//
-//        $request->session()->regenerateToken();
-//
-//        return response()->noContent();
-        return $this->successResponse(null, 'User logged out successfully.');
+        $request->user()->currentAccessToken()->delete();
+//        return $this->successResponse(null, 'User logged out successfully.');
+        return response()->noContent();
     }
 }

@@ -51,13 +51,31 @@ class PlantController extends ApiController
     }
 
 
+    #[OA\Post(
+        path: "/api/v1/plants",
+        operationId: "storePlant",
+        description: "Create a new plant",
+        summary: "Create a new plant",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['path_image', 'user_created'],
+            )
+        ),
+        tags: ["Plants"],
+        responses: [
+            new OA\Response(response: 200, description: 'OK'),
+            new OA\Response(response: 401, description: 'Not allowed'),
+        ]
+
+    )]
     public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:255',  // Added validation for 'address'
-            'path_image' => 'required|file|mimes:jpeg,jpg,png',  // Ensure valid image types
+            'address' => 'nullable|string|max:255',
+            'path_image' => 'required|file|mimes:jpeg,jpg,png',
             'user_created' => 'required',
             'date_begin' => 'nullable | date',
             'date_end' => 'nullable | date',
@@ -140,6 +158,50 @@ class PlantController extends ApiController
         );
     }
 
+    #[OA\Put(
+        path: "/api/v1/plants/{id}",
+        operationId: "updatePlant",
+        description: "Update plant by id",
+        summary: "Update plant",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['path_image', 'user_created'],
+            )
+        ),
+        tags: ["Plants"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "Plant id",
+                in: "path",
+                required: true,
+                allowEmptyValue: false,
+                schema: new OA\Schema(type: "string"),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'successful operation',
+                content: [
+                    new OA\JsonContent(ref: "#/components/schemas/Plant"),
+                ]
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Plant not found',
+                content: [
+                    new OA\JsonContent(
+                        example: [
+                            "success" => false,
+                            "message" => "Plant not found . "
+                        ]
+                    )
+                ]
+            )
+        ]
+    )]
     public function update(Request $request, string $id): JsonResponse
     {
         $plant = Plant::find($id);
