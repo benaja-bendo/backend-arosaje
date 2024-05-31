@@ -2,14 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\Plant;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Conversation>
  */
-class MessageFactory extends Factory
+class ConversationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,9 +17,8 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
-            'conversation_id' => 1,
-            'sender_id' => 1,
-            'content' => $this->faker->sentence,
+            'created_by' => 1,
+            'participant_id' => 2,
         ];
     }
 }

@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\MessageCollection;
+use App\Http\Resources\MessageResource;
+use App\Models\Conversation;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -71,24 +72,13 @@ class MessageController extends Controller
             new OA\Response(response: 401, description: 'Not allowed'),
         ],
     )]
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Conversation $conversation): \Illuminate\Http\JsonResponse
     {
-        $request->validate([
-            'sender_id' => 'required|exists:users,id',
-            'receiver_id' => 'required|exists:users,id',
-            'plant_id' => 'required|exists:plants,id',
-        ]);
+        $this->authorize('view', $conversation);
 
-        $messages = Message::query()
-            ->where('sender_id', $request->sender_id)
-            ->where('receiver_id', $request->receiver_id)
-            ->where('plant_id', $request->plant_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-        return $this->successResponse(
-            data: new MessageCollection($messages),
-            message: 'Demand created successfully.'
-        );
+        $messages = $conversation->messages()->with('user')->latest()->paginate(20);
+
+        return response()->json($messages);
     }
 
     #[OA\Post(
@@ -110,23 +100,17 @@ class MessageController extends Controller
     public function store(Request $request): \Illuminate\Http\JsonResponse
     {
         $request->validate([
+            'conversation_id' => 'required|exists:conversations,id',
             'sender_id' => 'required|exists:users,id',
-            'receiver_id' => 'required|exists:users,id',
-            'plant_id' => 'required|exists:plants,id',
-            'message' => 'required|string',
-            'is_read' => 'nullable|boolean',
+            'content' => 'required|string',
         ]);
 
-        $message = Message::create([
-            'sender_id' => $request->sender_id,
-            'receiver_id' => $request->receiver_id,
-            'plant_id' => $request->plant_id,
-            'message' => $request->message,
-            'is_read' => $request->is_read ?? false,
-        ]);
+//        $this->authorize('view', $conversation);
+
+        $message = Message::create($request->all());
 
         return $this->successResponse(
-            data: $message,
+            data: new MessageResource($message),
             message: 'Message created successfully.'
         );
     }
