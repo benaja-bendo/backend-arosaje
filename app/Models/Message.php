@@ -4,30 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Message extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'conversation_id',
         'sender_id',
-        'receiver_id',
-        'plant_id',
-        'message',
-        'is_read'];
+        'content'
+    ];
 
-    public function sender(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function conversation(): BelongsTo
+    {
+        return $this->belongsTo(Conversation::class);
+    }
+
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function receiver(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'receiver_id');
+        return $this->belongsTo(User::class);
     }
 
-    public function plant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Plant::class);
-    }
 }

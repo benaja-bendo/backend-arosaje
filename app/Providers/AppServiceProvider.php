@@ -2,10 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\Conversation;
+use App\Policies\ConversationPolicy;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+    protected $policies = [
+        Conversation::class => ConversationPolicy::class,
+    ];
     /**
      * Register any application services.
      */
@@ -19,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
     }
+
 }
